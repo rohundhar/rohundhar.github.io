@@ -6,16 +6,18 @@
 
 - id: columbia-final-year
   order: 1
-  date: 2026-11
+  date: 2027-05
   title: Final year at Columbia
   body: Finishing the dual MBA and MS in AI/ML, graduating Spring 2027.
 
-- id: job-pipeline
+- id: aeroponic-farming
   order: 2
-  date: 2026-11
-  title: Running a weekly AI job-search pipeline
-  body: A Sunday scheduled task pulls roles from Greenhouse, Ashby and Lever boards, has Claude analyze and score each one, and ranks the best of them for the week ahead.
-  # TODO(rohun): link to /projects/job-quest/ once that page ships in Phase 3.
+  date: 2026-06
+  title: Aeroponic farming for minitubers
+  body: 
+    Designing a low-cost aeroponic system for growing minitubers (seed potatoes) in a
+    controlled environment. The goal is to make it easier for small-scale farmers to
+    grow their own seed potatoes, which are often expensive and hard to source.
 
 - id: polligraph
   order: 3
