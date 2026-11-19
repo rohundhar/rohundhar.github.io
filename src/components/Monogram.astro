@@ -1,0 +1,53 @@
+---
+/**
+ * The "RD" mark. Decorative wherever the name is already in the text, so it is
+ * hidden from assistive tech by default; pass `label` when it stands alone.
+ */
+import { site } from '../data/site';
+
+interface Props {
+  size?: number;
+  label?: string;
+  class?: string;
+}
+
+const { size = 56, label, class: className } = Astro.props;
+---
+
+<span
+  class:list={['monogram', className]}
+  style={`--monogram-size: ${size}px`}
+  aria-hidden={label ? undefined : 'true'}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+>
+  {site.monogram}
+</span>
+
+<style>
+  .monogram {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--monogram-size);
+    block-size: var(--monogram-size);
+    border: 2px solid var(--ink);
+    /* The wash, not the saturated token: --c-gold is near-black in the
+       light theme, which would put dark ink on a dark plate. */
+    background: var(--c-gold-wash);
+    color: var(--ink);
+    font-family: var(--font-pixel), monospace;
+    font-size: calc(var(--monogram-size) * 0.3);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    user-select: none;
+    flex: none;
+    box-shadow: var(--drop-sm) var(--ink);
+    transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+  }
+
+  a:hover > .monogram {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+</style>

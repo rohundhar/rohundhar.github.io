@@ -1,0 +1,24 @@
+# What Rohun is working on now. Newest first by `date`; the home page shows the
+# latest three. Refresh roughly monthly.
+#
+# `date` is YYYY-MM and is formatted for display — keep it a string so there is
+# no timezone ambiguity.
+
+- id: columbia-final-year
+  order: 1
+  date: 2026-11
+  title: Final year at Columbia
+  body: Finishing the dual MBA and MS in AI/ML, graduating Spring 2027.
+
+- id: job-pipeline
+  order: 2
+  date: 2026-11
+  title: Running a weekly AI job-search pipeline
+  body: A Sunday scheduled task pulls roles from Greenhouse, Ashby and Lever boards, has Claude analyze and score each one, and ranks the best of them for the week ahead.
+  # TODO(rohun): link to /projects/job-quest/ once that page ships in Phase 3.
+
+- id: polligraph
+  order: 3
+  date: 2026-11
+  title: Designing Polligraph
+  body: A civic-data dashboard that tracks legislation and campaign promises across federal, Michigan, New York State and NYC sources. Design stage — no project page until it ships.

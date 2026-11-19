@@ -1,0 +1,84 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Stats from '../components/Stats.astro';
+import Strengths from '../components/Strengths.astro';
+import CareerTrack from '../components/CareerTrack.astro';
+import NowList from '../components/NowList.astro';
+import Projects from '../components/Projects.astro';
+import { site } from '../data/site';
+---
+
+<Base>
+  <Hero />
+  <Marquee />
+
+  <div class="wrap">
+    <section class="section section--flush" aria-labelledby="stats-heading">
+      <h2 id="stats-heading" class="visually-hidden">By the numbers</h2>
+      <Stats />
+    </section>
+
+    <section class="section" style="--section-accent: var(--c-pink)" aria-labelledby="strengths-heading">
+      <div class="section-head">
+        <h2 id="strengths-heading" class="section-title">What I bring</h2>
+      </div>
+      <Strengths />
+    </section>
+
+    <section class="section" style="--section-accent: var(--c-cyan)" aria-labelledby="career-heading">
+      <div class="section-head">
+        <h2 id="career-heading" class="section-title">Career</h2>
+        <a class="section-head__link" href="/about/">Full history &rarr;</a>
+      </div>
+
+      <CareerTrack />
+
+      <div class="cluster career__actions">
+        <a class="btn btn--ghost" href={site.resume} target="_blank" rel="noopener" data-goatcounter-click="resume-download">
+          Download CV
+        </a>
+        <a class="btn btn--ghost" href={site.linkedin} target="_blank" rel="noopener" data-goatcounter-click="linkedin">
+          LinkedIn
+        </a>
+      </div>
+    </section>
+
+    <section class="section" style="--section-accent: var(--c-gold)" aria-labelledby="projects-heading">
+      <div class="section-head">
+        <h2 id="projects-heading" class="section-title">Projects</h2>
+        <a class="section-head__link" href="/projects/">All projects &rarr;</a>
+      </div>
+      <Projects />
+    </section>
+
+    <section class="section" style="--section-accent: var(--c-lime)" aria-labelledby="now-heading">
+      <div class="section-head">
+        <h2 id="now-heading" class="section-title">Now</h2>
+        <a class="section-head__link" href="/now/">Full list &rarr;</a>
+      </div>
+      <NowList limit={3} />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .section-head__link {
+    font-family: var(--font-mono), monospace;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+  }
+
+  .section-head__link:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .career__actions {
+    margin-block-start: var(--s-5);
+  }
+</style>

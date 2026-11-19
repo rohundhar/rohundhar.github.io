@@ -1,0 +1,160 @@
+---
+/**
+ * Project cards with live links.
+ *
+ * Each project publishes itself from its own public repo to
+ * rohundhar.github.io/<repo>/ via GitHub Pages, so a push to that repo updates
+ * what visitors run here with no change to this one.
+ *
+ * TODO(rohun): Phase 2 of docs/designdoc.md replaces these outbound links with
+ * the `projects` content collection and an in-page run panel (click-to-play
+ * iframe plus a /play/<slug>/ route). The data in src/data/site.ts is already
+ * shaped for that move.
+ */
+import { projects } from '../data/site';
+
+/**
+ * Run-mode badges, per docs/designdoc.md. The badge states how the project
+ * runs; the button below it is the action. They must not say the same thing.
+ */
+const MODE = {
+  embedded: { label: 'Playable', token: 'embedded' },
+  demo: { label: 'Demo data', token: 'demo' },
+} as const;
+
+interface Props {
+  /** Show only the first n projects. */
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const shown = typeof limit === 'number' ? projects.slice(0, limit) : projects;
+---
+
+<ul class="projects">
+  {
+    shown.map((project) => (
+      <li
+        class="card card--interactive project"
+        style={`--tile: var(--c-${project.color}); --card-shadow: var(--c-${project.color}); --mode: var(--mode-${MODE[project.mode].token}); --mode-wash: var(--mode-${MODE[project.mode].token}-wash)`}
+      >
+        <div class="project__head">
+          <h3 class="project__title">{project.title}</h3>
+          <span class="project__badge">{MODE[project.mode].label}</span>
+        </div>
+
+        <p class="project__pitch">{project.pitch}</p>
+        <p class="project__body">{project.body}</p>
+
+        <ul class="project__tags">
+          {project.tags.map((tag) => (
+            <li class="chip">{tag}</li>
+          ))}
+        </ul>
+
+        <div class="project__actions">
+          {project.liveUrl && (
+            <a
+              class="btn btn--primary"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener"
+              data-goatcounter-click={`play-${project.title}`}
+            >
+              Play now
+              <span class="visually-hidden"> — {project.title} (opens in a new tab)</span>
+            </a>
+          )}
+          <a
+            class="btn btn--ghost"
+            href={project.repoUrl}
+            target="_blank"
+            rel="noopener"
+            data-goatcounter-click={`code-${project.title}`}
+          >
+            Code
+            <span class="visually-hidden"> for {project.title} on GitHub (opens in a new tab)</span>
+          </a>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .projects {
+    display: grid;
+    gap: var(--s-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .project {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    align-content: start;
+  }
+
+  .project__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3);
+  }
+
+  .project__title {
+    font-size: var(--text-xl);
+  }
+
+  .project__badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px var(--s-3);
+    border: 2px solid var(--ink);
+    background: var(--mode-wash);
+    color: var(--mode);
+    font-family: var(--font-pixel), monospace;
+    font-size: var(--pixel-xs);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .project__pitch {
+    font-family: var(--font-mono), monospace;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--tile);
+  }
+
+  .project__body {
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .project__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .project__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4) var(--s-3);
+    margin-block-start: auto;
+    padding-block-start: var(--s-3);
+  }
+
+  @media (min-width: 46rem) {
+    .projects {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

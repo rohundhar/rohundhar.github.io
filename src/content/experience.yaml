@@ -1,0 +1,74 @@
+# Experience timeline. Source of truth is the one-page resume
+# (Job Search 2027/Resources/ResumeOnePager.pdf, current as of Nov 2026).
+#
+# `sort` drives display order, newest first. Only city/metro locations here —
+# never a street address (see AGENTS.md).
+
+- id: columbia
+  sort: 2025
+  period: 2025–2027
+  role: MBA; MS in Engineering & Applied Sciences (AI/ML)
+  org: Columbia Business School and Columbia Engineering
+  location: New York, NY
+  kind: education
+  summary: Dual MBA × MS with AI/ML and Entrepreneurship concentrations.
+  tags: [AI/ML, Entrepreneurship]
+  highlights:
+    - Dual MBA × MS degree with an Entrepreneurship concentration and an AI/ML concentration.
+    - Co-President of the Gaming & Esports Club at Columbia Business School.
+    - Department Representative for the MBAxMS Program on the Engineering Graduate Student Council.
+
+- id: sleep-reset-growth
+  sort: 2022
+  period: 2022–2024
+  role: Mobile Engineering Lead & Growth Strategist
+  org: Sleep Reset / Simple Habit
+  location: San Francisco, CA
+  kind: work
+  summary: Co-created a sleep-science AI agent the coaching team relied on, then built the company's first conversion-optimization strategy.
+  tags: [AI agent, LLM, Growth, Meta Ads, Retention]
+  highlights:
+    - Co-created a sleep-science AI agent that learned from published research to advise like our sleep coaches, who relied on it as a trusted source on our program and solutions; it also chatted with members when no human coach was available.
+    - Pioneered the company's first conversion-optimization strategy, building a multi-channel acquisition funnel across Meta and Google Ads that influenced revenue growth at a 3% conversion rate.
+    - Owned the user-retention vertical, improving subscriber retention by 15–20% and lifting first-week retention by 10 percentage points.
+
+- id: sleep-reset-mobile
+  sort: 2020
+  period: 2020–2022
+  role: Mobile Engineering Lead
+  org: Sleep Reset / Simple Habit
+  location: San Francisco, CA
+  kind: work
+  summary: Led the mobile team and the React Native app across iOS and Android.
+  tags: [React Native, iOS, Android, Scrum]
+  highlights:
+    - Led the mobile engineering team for the Sleep Reset app, building a React Native infrastructure serving both iOS and Android.
+    - Ran the end-to-end product release cycle as Release Manager and Scrum Master, keeping technical delivery aligned with business goals.
+
+- id: sonos
+  sort: 2018
+  period: 2018–2020
+  role: Software Engineer II
+  org: Sonos
+  location: Boston, MA
+  kind: work
+  summary: Shipped a self-service platform for global retail partners, saving six figures a year.
+  tags: [Vue.js, Meteor.js, PostgreSQL, OpenVPN]
+  highlights:
+    - Designed and launched a self-service platform for global retail partners to remotely manage their in-store displays, saving hundreds of thousands in annual operational and technician costs.
+    - Built and deployed a health-monitoring dashboard (Vue.js, Meteor.js, PostgreSQL) for Sonos and IKEA retail displays across the Americas, Europe and APAC.
+    - Re-architected OpenVPN servers, cutting hardware provisioning and patching time by 50%.
+    - Served as the technical liaison for the Japanese market, supporting partners alongside the Global Brand Retail team.
+
+- id: south-end-tech
+  sort: 2015
+  period: 2015–2018
+  role: STEM Program Manager & Instructor
+  org: South End Technology Center
+  location: Boston, MA
+  kind: work
+  summary: Ran an after-school STEM program and a 6-week hardware-programming curriculum.
+  tags: [Teaching, 3D Printing, Laser Cutting]
+  highlights:
+    - Led hands-on emerging-technology workshops for middle and high school students.
+    - Directed an after-school STEM program, developing a 6-week progressive curriculum in hardware programming and rapid prototyping (3D printing, laser cutting).

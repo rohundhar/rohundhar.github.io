@@ -1,0 +1,117 @@
+---
+/**
+ * Experience timeline, newest first, from src/content/experience.yaml.
+ *
+ * `compact` renders the home-page snapshot: one line per role, no bullets.
+ */
+import { getCollection } from 'astro:content';
+
+interface Props {
+  compact?: boolean;
+  /** Cap the number of entries shown (used by the home-page snapshot). */
+  limit?: number;
+}
+
+const { compact = false, limit } = Astro.props;
+
+const entries = (await getCollection('experience')).sort((a, b) => b.data.sort - a.data.sort);
+const shown = typeof limit === 'number' ? entries.slice(0, limit) : entries;
+---
+
+<ol class:list={['timeline', { 'timeline--compact': compact }]}>
+  {
+    shown.map((entry) => (
+      <li class="timeline__item">
+        <div class="timeline__period mono">{entry.data.period}</div>
+        <div class="timeline__body">
+          <h3 class="timeline__role">{entry.data.role}</h3>
+          <p class="timeline__org">
+            {entry.data.org}
+            {entry.data.location && <span class="timeline__location"> · {entry.data.location}</span>}
+          </p>
+          {!compact && (
+            <ul class="timeline__highlights">
+              {entry.data.highlights.map((h) => (
+                <li>{h}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+  }
+
+  .timeline__item {
+    display: grid;
+    gap: var(--s-1) var(--s-5);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--rule);
+  }
+
+  .timeline__item:first-child {
+    border-top: 0;
+    padding-block-start: 0;
+  }
+
+  .timeline--compact .timeline__item {
+    padding-block: var(--s-4);
+  }
+
+  .timeline__period {
+    color: var(--ink-faint);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-block-start: 0.35em;
+  }
+
+  .timeline__role {
+    font-size: var(--text-lg);
+    margin-bottom: 2px;
+  }
+
+  .timeline--compact .timeline__role {
+    font-size: var(--text-base);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .timeline__org {
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+  }
+
+  .timeline__location {
+    color: var(--ink-faint);
+  }
+
+  .timeline__highlights {
+    margin: var(--s-3) 0 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--s-2);
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .timeline__highlights li::marker {
+    color: var(--rule-strong);
+  }
+
+  @media (min-width: 42rem) {
+    .timeline__item {
+      grid-template-columns: 8.5rem 1fr;
+    }
+  }
+</style>

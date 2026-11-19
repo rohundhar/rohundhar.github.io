@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import NowList from '../components/NowList.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  pageTitle="Now"
+  ogImage="/og/now.png"
+  description="What Rohun Dhar is working on right now — current projects, studies and ventures."
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">Now</p>
+      <h1>What I'm working on</h1>
+      <p class="lede reading">
+        Updated roughly monthly, newest first. If something here overlaps with what you're building,{' '}
+        <a href={`mailto:${site.email}`} data-goatcounter-click="email">send me a note</a>.
+      </p>
+    </header>
+
+    <section class="section">
+      <NowList />
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: var(--s-8) var(--s-2);
+  }
+
+  .page-head h1 {
+    margin-block: var(--s-2);
+  }
+</style>

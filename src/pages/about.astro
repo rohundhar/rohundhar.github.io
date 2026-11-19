@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import Timeline from '../components/Timeline.astro';
+import { site, skillGroups, languages } from '../data/site';
+---
+
+<Base
+  pageTitle="About"
+  ogImage="/og/about.png"
+  description="Rohun Dhar's background: six years of mobile, platform and growth engineering at Sonos and Sleep Reset, and a dual MBA and MS in AI/ML at Columbia."
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">About</p>
+      <h1>Rohun Dhar</h1>
+      <p class="lede reading">{site.titleLine}</p>
+    </header>
+
+    <section class="section" aria-labelledby="bio-heading">
+      <h2 id="bio-heading" class="visually-hidden">Biography</h2>
+      <div class="reading bio stack" style="--flow: var(--s-4)">
+        <p>
+          I'm a full-stack engineer. For six years I shipped mobile and growth products — leading mobile
+          engineering at Sleep Reset and building retail-partner platforms at Sonos — and I now build applied
+          AI tools the same way: end to end, in front of real users.
+        </p>
+        <p>
+          At Sonos I designed a self-service platform that let retail partners around the world manage their own
+          in-store displays, and I served as the technical liaison for the Japanese market. At Sleep Reset I led
+          the React Native app across iOS and Android, then took on growth — building the company's first
+          conversion-optimization strategy and lifting subscriber retention 15–20%.
+        </p>
+        <p>
+          I'm at Columbia now for a dual MBA and MS in AI/ML, graduating Spring 2027, and I'm looking for
+          forward-deployed and applied AI engineering roles. The problems I like most are the ones where the hard
+          part isn't the model — it's getting it into someone's hands and making it genuinely useful.
+        </p>
+      </div>
+
+      <div class="cluster about__actions">
+        <a class="btn btn--primary" href={site.resume} target="_blank" rel="noopener" data-goatcounter-click="resume-download">
+          Download resume (PDF)
+        </a>
+        <a class="btn btn--ghost" href={site.linkedin} target="_blank" rel="noopener" data-goatcounter-click="linkedin">
+          LinkedIn
+        </a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="experience-heading">
+      <div class="section-head"><h2 id="experience-heading">Experience &amp; education</h2></div>
+      <Timeline />
+    </section>
+
+    <section class="section" aria-labelledby="skills-heading">
+      <div class="section-head"><h2 id="skills-heading">Skills</h2></div>
+      <dl class="skills">
+        {
+          skillGroups.map((group) => (
+            <div class="skills__group">
+              <dt class="eyebrow">{group.label}</dt>
+              <dd>
+                <ul class="cluster skills__items">
+                  {group.items.map((item) => (
+                    <li class="chip">{item}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="section" aria-labelledby="languages-heading">
+      <div class="section-head"><h2 id="languages-heading">Languages</h2></div>
+      <ul class="cluster languages">
+        {
+          languages.map((language) => (
+            <li class="languages__item">
+              <span class="languages__name">{language.name}</span>
+              <span class="languages__level mono">{language.level}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="contact-heading">
+      <div class="section-head"><h2 id="contact-heading">Contact</h2></div>
+      <ul class="contact">
+        <li>
+          <span class="eyebrow">Personal</span>
+          <a href={`mailto:${site.email}`} data-goatcounter-click="email">{site.email}</a>
+        </li>
+        <li>
+          <span class="eyebrow">Columbia</span>
+          <a href={`mailto:${site.emailSecondary}`} data-goatcounter-click="email">{site.emailSecondary}</a>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: var(--s-8) var(--s-2);
+  }
+
+  .page-head h1 {
+    margin-block: var(--s-2);
+  }
+
+  .bio p {
+    font-size: var(--text-body);
+    line-height: 1.7;
+  }
+
+  .about__actions {
+    margin-block-start: var(--s-6);
+  }
+
+  .skills {
+    display: grid;
+    gap: var(--s-5);
+    margin: 0;
+  }
+
+  .skills__group {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .skills__group dd {
+    margin: 0;
+  }
+
+  .skills__items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: var(--s-2);
+  }
+
+  .languages {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    gap: var(--s-6);
+  }
+
+  .languages__item {
+    display: grid;
+    gap: 2px;
+  }
+
+  .languages__name {
+    font-family: var(--font-display), Georgia, serif;
+    font-size: var(--text-lg);
+  }
+
+  .languages__level {
+    color: var(--ink-faint);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .contact {
+    display: grid;
+    gap: var(--s-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contact li {
+    display: grid;
+    gap: 2px;
+  }
+
+  @media (min-width: 42rem) {
+    .skills {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
+
+    .contact {
+      grid-template-columns: repeat(2, minmax(0, 18rem));
+    }
+  }
+</style>

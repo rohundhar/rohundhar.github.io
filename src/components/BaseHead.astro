@@ -1,0 +1,103 @@
+---
+/**
+ * Everything inside <head>: titles, canonical URL, Open Graph, JSON-LD,
+ * self-hosted fonts, and the inline script that applies the saved theme
+ * before first paint so there is no flash of the wrong theme.
+ *
+ * PRIVACY: the Person schema deliberately carries no `telephone` or
+ * `address` field. See AGENTS.md.
+ */
+import { Font } from 'astro:assets';
+import { site } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  /** Page name, e.g. "About". Omit on the home page. */
+  pageTitle?: string;
+  description?: string;
+  /** Path to the Open Graph image, relative to the site root. */
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  pageTitle,
+  description = site.description,
+  ogImage = '/og/default.png',
+  noindex = false,
+} = Astro.props;
+
+const title = pageTitle
+  ? `${site.name} — ${pageTitle}`
+  : `${site.name} — ${site.titleLine}`;
+
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImageUrl = new URL(ogImage, site.url).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.titleLine,
+  description: site.description,
+  url: site.url,
+  email: `mailto:${site.email}`,
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: site.alumniOf,
+  },
+  knowsLanguage: ['English', 'Japanese', 'Hindi'],
+  sameAs: [site.linkedin, site.github],
+};
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${site.name} — ${site.titleLine}`} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<meta name="theme-color" content="#fff6e9" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0e0a1f" media="(prefers-color-scheme: dark)" />
+
+<Font cssVariable="--font-sans" preload />
+<Font cssVariable="--font-pixel" preload />
+<Font cssVariable="--font-mono" />
+
+<script is:inline>
+  // Apply the stored theme before first paint. Kept inline and tiny on purpose.
+  (function () {
+    try {
+      var stored = localStorage.getItem('rd-theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.dataset.theme = stored;
+      }
+    } catch (e) {
+      /* private mode or blocked storage: fall back to prefers-color-scheme */
+    }
+  })();
+</script>
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />

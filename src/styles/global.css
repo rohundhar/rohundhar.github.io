@@ -1,0 +1,583 @@
+/* ==========================================================================
+   Design tokens — 16-bit arcade
+   --------------------------------------------------------------------------
+   Loud colour, hard edges and pixel type, kept legible: every colour pair is
+   verified against WCAG 2.2 AA by `npm run contrast-check`. Never hardcode a
+   hex value in a component — go through a token so both themes stay in sync.
+
+   Theme resolution:
+     1. :root                      -> light (cream arcade flyer)
+     2. prefers-color-scheme: dark -> dark (arcade cabinet), unless forced light
+     3. [data-theme="dark"]        -> dark, forced by the toggle
+
+   --font-sans / --font-pixel / --font-mono come from Astro's font pipeline
+   (astro.config.mjs); they are self-hosted and subset at build time.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces: warm cream paper */
+  --paper: #fff6e9;
+  --surface: #ffffff;
+  --surface-sunken: #fbebd6;
+
+  /* Ink: deep indigo-black */
+  --ink: #1b1033;
+  --ink-muted: #4a3a6b;
+  --ink-faint: #5f4e82;
+
+  /* Hairlines and control edges */
+  --rule: #e6d4ba;
+  --rule-strong: #c4ad8d;
+  --border-control: #6f5c3f;
+
+  /* Primary accent */
+  --accent: #c2185b;
+  --accent-strong: #991347;
+  --accent-wash: #ffe3ef;
+  --accent-on: #ffffff;
+
+  /* Arcade palette. Used to colour-code sections, cards and stats so the
+     page reads as a set of machines rather than one wall of text. */
+  --c-pink: #c2185b;
+  --c-cyan: #06697c;
+  --c-gold: #875700;
+  --c-lime: #3c7a14;
+  --c-violet: #6d28d9;
+
+  --c-pink-wash: #ffe3ef;
+  --c-cyan-wash: #ddf4f8;
+  --c-gold-wash: #fdeecd;
+  --c-lime-wash: #e4f6d9;
+  --c-violet-wash: #ece3ff;
+
+  /* Run-mode badge colours, fixed per mode. The ModeBadge component arrives
+     with the portfolio system (Phase 2); the tokens live here. */
+  --mode-embedded: #16633f;
+  --mode-embedded-wash: #d9f2e5;
+  --mode-demo: #875700;
+  --mode-demo-wash: #fdeecd;
+  --mode-live: #15527f;
+  --mode-live-wash: #dceaf7;
+  --mode-case: #6d28d9;
+  --mode-case-wash: #ece3ff;
+
+  --focus: #1b1033; /* = --ink; explicit so contrast-check can verify it */
+  /* Hard, blur-free shadows: the whole look depends on these staying crisp. */
+  --drop: 5px 5px 0;
+  --drop-sm: 3px 3px 0;
+  --drop-lg: 8px 8px 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --paper: #0e0a1f;
+    --surface: #1a1333;
+    --surface-sunken: #080513;
+
+    --ink: #f4f0ff;
+    --ink-muted: #bcb3dc;
+    --ink-faint: #9a90bd;
+
+    --rule: #2e2550;
+    --rule-strong: #463a78;
+    --border-control: #8477bd;
+
+    --accent: #ff7ab6;
+    --accent-strong: #ffa3cd;
+    --accent-wash: #3a1030;
+    --accent-on: #230a18;
+
+    --c-pink: #ff7ab6;
+    --c-cyan: #5be1f2;
+    --c-gold: #ffd166;
+    --c-lime: #9bf06a;
+    --c-violet: #c4a6ff;
+
+    --c-pink-wash: #3a1030;
+    --c-cyan-wash: #082c33;
+    --c-gold-wash: #33260a;
+    --c-lime-wash: #14300c;
+    --c-violet-wash: #221640;
+
+    --mode-embedded: #6ff0b4;
+    --mode-embedded-wash: #0d2e1f;
+    --mode-demo: #ffd166;
+    --mode-demo-wash: #33260a;
+    --mode-live: #7cc6ff;
+    --mode-live-wash: #0c2537;
+    --mode-case: #c4a6ff;
+    --mode-case-wash: #221640;
+
+    --focus: #ffd166;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper: #0e0a1f;
+  --surface: #1a1333;
+  --surface-sunken: #080513;
+
+  --ink: #f4f0ff;
+  --ink-muted: #bcb3dc;
+  --ink-faint: #9a90bd;
+
+  --rule: #2e2550;
+  --rule-strong: #463a78;
+  --border-control: #8477bd;
+
+  --accent: #ff7ab6;
+  --accent-strong: #ffa3cd;
+  --accent-wash: #3a1030;
+  --accent-on: #230a18;
+
+  --c-pink: #ff7ab6;
+  --c-cyan: #5be1f2;
+  --c-gold: #ffd166;
+  --c-lime: #9bf06a;
+  --c-violet: #c4a6ff;
+
+  --c-pink-wash: #3a1030;
+  --c-cyan-wash: #082c33;
+  --c-gold-wash: #33260a;
+  --c-lime-wash: #14300c;
+  --c-violet-wash: #221640;
+
+  --mode-embedded: #6ff0b4;
+  --mode-embedded-wash: #0d2e1f;
+  --mode-demo: #ffd166;
+  --mode-demo-wash: #33260a;
+  --mode-live: #7cc6ff;
+  --mode-live-wash: #0c2537;
+  --mode-case: #c4a6ff;
+  --mode-case-wash: #221640;
+
+  --focus: #ffd166;
+}
+
+/* --------------------------------------------------------------------------
+   Scale
+   -------------------------------------------------------------------------- */
+
+:root {
+  --font-display: var(--font-sans);
+
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+
+  --w-reading: 42.5rem;
+  --w-grid: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-body: 1.0625rem;
+  --text-lg: clamp(1.125rem, 0.4vw + 1.03rem, 1.3125rem);
+  --text-xl: clamp(1.3125rem, 1vw + 1.07rem, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.8vw + 1.2rem, 2.25rem);
+  --text-3xl: clamp(2rem, 3vw + 1.3rem, 3rem);
+
+  /* Pixel type is monospaced and very wide; it needs its own, smaller scale. */
+  --pixel-xs: 0.5625rem;
+  --pixel-sm: 0.6875rem;
+  --pixel-md: 0.875rem;
+  --pixel-lg: clamp(1rem, 1.2vw + 0.75rem, 1.5rem);
+  --pixel-hero: clamp(1.75rem, 4.5vw + 0.4rem, 3.25rem);
+
+  /* Square corners: this is a pixel interface. */
+  --r-sm: 0;
+  --r-md: 0;
+  --r-lg: 0;
+  --r-pill: 0;
+
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+  /* Stepped easing, for motion that should feel like sprite frames. */
+  --ease-step: steps(5, end);
+}
+
+/* --------------------------------------------------------------------------
+   Reset
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+  padding: 0;
+}
+
+:target {
+  scroll-margin-top: var(--s-8);
+}
+
+/* --------------------------------------------------------------------------
+   Typography
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-3xl);
+}
+h2 {
+  font-size: var(--text-2xl);
+}
+h3 {
+  font-size: var(--text-xl);
+}
+h4 {
+  font-size: var(--text-lg);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  transition: color var(--t-fast) var(--ease), text-decoration-color var(--t-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration-color: currentColor;
+}
+
+/* Pixel type. Short strings only — it is unreadable in paragraphs. */
+.pixel {
+  font-family: var(--font-pixel), 'Courier New', monospace;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-pixel), 'Courier New', monospace;
+  font-size: var(--pixel-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+
+.lede {
+  font-size: var(--text-lg);
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   Focus and skip link
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--s-4);
+  top: var(--s-4);
+  z-index: 100;
+  padding: var(--s-2) var(--s-4);
+  background: var(--accent);
+  color: var(--accent-on);
+  border: 2px solid var(--ink);
+  font-family: var(--font-pixel), monospace;
+  font-size: var(--pixel-xs);
+  text-transform: uppercase;
+  text-decoration: none;
+  transform: translateY(-250%);
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--w-grid);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.reading {
+  max-width: var(--w-reading);
+}
+
+.section {
+  padding-block: var(--s-8);
+  border-top: 2px solid var(--rule);
+}
+
+.section--flush {
+  border-top: 0;
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-6);
+}
+
+/* Pixel section heading with a leading colour block. */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-family: var(--font-pixel), monospace;
+  font-size: var(--pixel-md);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.section-title::before {
+  content: '';
+  inline-size: 14px;
+  block-size: 14px;
+  flex: none;
+  background: var(--section-accent, var(--accent));
+  box-shadow: var(--drop-sm) color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+.stack > * + * {
+  margin-top: var(--flow, var(--s-4));
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons — chunky arcade keys that depress when pressed
+   -------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 46px;
+  padding: var(--s-2) var(--s-5);
+  border: 2px solid var(--ink);
+  font-family: var(--font-pixel), monospace;
+  font-size: var(--pixel-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: var(--drop) var(--ink);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease),
+    background-color var(--t-fast) var(--ease);
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong);
+  color: var(--accent-on);
+}
+
+.btn--ghost {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: var(--drop-lg) var(--ink);
+}
+
+.btn:active {
+  transform: translate(5px, 5px);
+  box-shadow: 0 0 0 var(--ink);
+}
+
+/* --------------------------------------------------------------------------
+   Cards and chips
+   -------------------------------------------------------------------------- */
+
+.card {
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  padding: var(--s-5);
+  box-shadow: var(--drop) var(--card-shadow, var(--rule-strong));
+  transition: transform var(--t-base) var(--ease), box-shadow var(--t-base) var(--ease);
+}
+
+.card--interactive:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--drop-lg) var(--card-shadow, var(--accent));
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px var(--s-3);
+  border: 2px solid var(--chip-color, var(--ink));
+  background: var(--chip-wash, var(--surface-sunken));
+  color: var(--chip-color, var(--ink-muted));
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   Retro surface treatments
+   -------------------------------------------------------------------------- */
+
+/* CRT scanlines. Decorative only, and kept faint enough not to touch contrast. */
+.scanlines {
+  position: relative;
+  isolation: isolate;
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--ink) 7%, transparent) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Motion: nothing moves when the visitor asked for stillness
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

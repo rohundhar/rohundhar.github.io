@@ -1,0 +1,94 @@
+---
+/**
+ * Dated "what I'm doing now" entries, newest first, from src/content/now.yaml.
+ */
+import { getCollection } from 'astro:content';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+/** `date` is a YYYY-MM string, so format it without constructing a Date. */
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+function formatMonth(value: string) {
+  const [year, month] = value.split('-');
+  return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+
+const entries = (await getCollection('now')).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date) || a.data.order - b.data.order
+);
+const shown = typeof limit === 'number' ? entries.slice(0, limit) : entries;
+---
+
+<ul class="now-list">
+  {
+    shown.map((entry) => (
+      <li class="now-list__item">
+        <time class="now-list__date mono" datetime={entry.data.date}>{formatMonth(entry.data.date)}</time>
+        <div>
+          <h3 class="now-list__title">
+            {entry.data.href ? <a href={entry.data.href}>{entry.data.title}</a> : entry.data.title}
+          </h3>
+          <p class="now-list__body">{entry.data.body}</p>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .now-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+  }
+
+  .now-list__item {
+    display: grid;
+    gap: var(--s-1) var(--s-5);
+    padding-block: var(--s-4);
+    border-top: 1px solid var(--rule);
+  }
+
+  .now-list__item:first-child {
+    border-top: 0;
+    padding-block-start: 0;
+  }
+
+  .now-list__date {
+    color: var(--ink-faint);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-block-start: 0.3em;
+    white-space: nowrap;
+  }
+
+  .now-list__title {
+    font-size: var(--text-base);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+
+  .now-list__body {
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 42rem) {
+    .now-list__item {
+      grid-template-columns: 8.5rem 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+/**
+ * Footer. Repeats both email addresses, LinkedIn, GitHub and a build date, so
+ * every page ends with a way to get in touch.
+ */
+import { site } from '../data/site';
+
+/** Set at build time, so it reflects the last deploy. */
+const lastUpdated = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <div class="site-footer__col">
+      <h2 class="eyebrow">Get in touch</h2>
+      <ul class="site-footer__list">
+        <li><a href={`mailto:${site.email}`} data-goatcounter-click="email">{site.email}</a></li>
+        <li><a href={`mailto:${site.emailSecondary}`} data-goatcounter-click="email">{site.emailSecondary}</a></li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col">
+      <h2 class="eyebrow">Elsewhere</h2>
+      <ul class="site-footer__list">
+        <li>
+          <a href={site.linkedin} target="_blank" rel="noopener" data-goatcounter-click="linkedin">LinkedIn</a>
+        </li>
+        <li><a href={site.github} target="_blank" rel="noopener">GitHub</a></li>
+        <li>
+          <a href={site.resume} target="_blank" rel="noopener" data-goatcounter-click="resume-download">Resume (PDF)</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="site-footer__col site-footer__meta">
+      <p class="mono">
+        {site.name}<br />
+        <span>Last updated {lastUpdated}</span>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: auto;
+    border-top: 1px solid var(--rule);
+    background: var(--surface-sunken);
+    padding-block: var(--s-7);
+  }
+
+  .site-footer__inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: var(--s-6);
+  }
+
+  .site-footer__list {
+    margin: var(--s-3) 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--s-2);
+    font-size: var(--text-base);
+  }
+
+  .site-footer__list a {
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .site-footer__list a:hover {
+    border-bottom-color: currentColor;
+  }
+
+  .site-footer__meta {
+    align-self: end;
+  }
+
+  .site-footer__meta p {
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+
+  @media (min-width: 60rem) {
+    .site-footer__meta {
+      text-align: right;
+    }
+  }
+</style>

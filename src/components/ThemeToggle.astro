@@ -1,0 +1,129 @@
+---
+/**
+ * Light/dark toggle. One of the site's three client-side islands.
+ *
+ * With no stored preference the site follows `prefers-color-scheme`. The first
+ * click pins the opposite of whatever is currently showing, and the choice is
+ * remembered in localStorage (see the inline script in BaseHead.astro, which
+ * applies it before first paint).
+ */
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false">
+  <span class="theme-toggle__icon" aria-hidden="true">
+    <svg class="theme-toggle__sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+      <circle cx="12" cy="12" r="4.25"></circle>
+      <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4"></path>
+    </svg>
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"></path>
+    </svg>
+  </span>
+  <span class="visually-hidden" data-theme-label>Switch to dark theme</span>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 38px;
+    block-size: 38px;
+    padding: 0;
+    border: 2px solid var(--ink);
+    background: var(--c-violet-wash);
+    color: var(--ink);
+    cursor: pointer;
+    flex: none;
+    box-shadow: var(--drop-sm) var(--ink);
+    transition: color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease),
+      box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+  }
+
+  .theme-toggle:hover {
+    background: var(--c-violet);
+    color: var(--paper);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .theme-toggle__icon {
+    display: grid;
+    place-items: center;
+  }
+
+  /* Show the icon for the theme you would switch *to*. */
+  .theme-toggle__moon {
+    display: block;
+  }
+  .theme-toggle__sun {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) .theme-toggle__moon {
+      display: none;
+    }
+    :root:not([data-theme='light']) .theme-toggle__sun {
+      display: block;
+    }
+  }
+
+  :root[data-theme='dark'] .theme-toggle__moon {
+    display: none;
+  }
+  :root[data-theme='dark'] .theme-toggle__sun {
+    display: block;
+  }
+
+  :root[data-theme='light'] .theme-toggle__moon {
+    display: block;
+  }
+  :root[data-theme='light'] .theme-toggle__sun {
+    display: none;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'rd-theme';
+  const root = document.documentElement;
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+  /** The theme actually on screen right now. */
+  function effectiveTheme(): 'light' | 'dark' {
+    const forced = root.dataset.theme;
+    if (forced === 'light' || forced === 'dark') return forced;
+    return media.matches ? 'dark' : 'light';
+  }
+
+  function sync(button: HTMLButtonElement) {
+    const current = effectiveTheme();
+    const next = current === 'dark' ? 'light' : 'dark';
+    const label = button.querySelector('[data-theme-label]');
+    if (label) label.textContent = `Switch to ${next} theme`;
+    button.setAttribute('aria-pressed', String(current === 'dark'));
+    button.title = `Switch to ${next} theme`;
+  }
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+
+  for (const button of buttons) {
+    sync(button);
+    button.addEventListener('click', () => {
+      const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        /* storage blocked: the choice simply won't persist */
+      }
+      for (const b of buttons) sync(b);
+    });
+  }
+
+  // Keep the label honest if the OS theme changes and nothing is pinned.
+  media.addEventListener('change', () => {
+    if (root.dataset.theme) return;
+    for (const b of buttons) sync(b);
+  });
+</script>

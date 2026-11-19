@@ -1,0 +1,53 @@
+---
+/**
+ * TODO(rohun): Phase 2 of docs/designdoc.md turns this into the real card grid
+ * driven by the `projects` content collection, with filter chips once there are
+ * more than four projects.
+ */
+import Base from '../../layouts/Base.astro';
+import Projects from '../../components/Projects.astro';
+import { site } from '../../data/site';
+---
+
+<Base
+  pageTitle="Projects"
+  ogImage="/og/projects.png"
+  description="AI projects by Rohun Dhar, each with a live version you can run in the browser."
+>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">Projects</p>
+      <h1>Things you can actually run</h1>
+      <p class="lede reading">
+        Every project here gets a write-up and a version you can use in the browser — no sign-up, no
+        screenshots standing in for a demo.
+      </p>
+    </header>
+
+    <section class="section">
+      <Projects />
+    </section>
+
+    <section class="section">
+      <p class="reading meta">
+        Code for each project lives in its own public repo on{' '}
+        <a href={site.github} target="_blank" rel="noopener">GitHub</a>.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    padding-block: var(--s-8) var(--s-2);
+  }
+
+  .page-head h1 {
+    margin-block: var(--s-2);
+  }
+
+  .meta {
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+  }
+</style>

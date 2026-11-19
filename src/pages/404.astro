@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base pageTitle="Page not found" noindex>
+  <div class="wrap notfound">
+    <p class="eyebrow">404</p>
+    <h1>That page isn't here</h1>
+    <p class="lede reading">
+      The link may be out of date, or the page may not have been built yet. These still work:
+    </p>
+
+    <div class="cluster notfound__actions">
+      <a class="btn btn--primary" href="/">Home</a>
+      <a class="btn btn--ghost" href="/projects/">Projects</a>
+      <a class="btn btn--ghost" href="/about/">About</a>
+    </div>
+
+    <p class="notfound__contact">
+      If you think something should be here,{' '}
+      <a href={`mailto:${site.email}`} data-goatcounter-click="email">let me know</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .notfound {
+    padding-block: var(--s-9) var(--s-10);
+  }
+
+  .notfound h1 {
+    margin-block: var(--s-2) var(--s-4);
+  }
+
+  .notfound__actions {
+    margin-block-start: var(--s-6);
+  }
+
+  .notfound__contact {
+    margin-block-start: var(--s-6);
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+  }
+</style>

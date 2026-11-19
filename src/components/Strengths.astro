@@ -1,0 +1,62 @@
+---
+/**
+ * Three cards making the forward-deployed-engineer case, styled as ability
+ * panels. Every claim is backed by the one-page resume — see src/data/site.ts.
+ */
+import { strengths } from '../data/site';
+
+const COLORS = ['pink', 'cyan', 'lime'] as const;
+---
+
+<ul class="strengths">
+  {
+    strengths.map((strength, i) => (
+      <li
+        class="card card--interactive strengths__item"
+        style={`--tile: var(--c-${COLORS[i % COLORS.length]}); --card-shadow: var(--c-${COLORS[i % COLORS.length]})`}
+      >
+        <span class="strengths__index" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <h3 class="strengths__title">{strength.title}</h3>
+        <p class="strengths__body">{strength.body}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .strengths {
+    display: grid;
+    gap: var(--s-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .strengths__item {
+    display: grid;
+    gap: var(--s-2);
+    align-content: start;
+  }
+
+  .strengths__index {
+    font-family: var(--font-pixel), monospace;
+    font-size: var(--pixel-sm);
+    color: var(--tile);
+  }
+
+  .strengths__title {
+    font-size: var(--text-lg);
+  }
+
+  .strengths__body {
+    font-size: var(--text-base);
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 52rem) {
+    .strengths {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

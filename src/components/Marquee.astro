@@ -1,0 +1,106 @@
+---
+/**
+ * Descriptor banner that scrolls at a constant speed.
+ *
+ * The list is rendered three times: once for everyone, twice more as
+ * `aria-hidden` filler so the loop never shows a gap on a wide screen. One
+ * animation cycle travels exactly one copy's width (-33.333%), which is what
+ * makes the wrap seamless.
+ */
+import { descriptors } from '../data/site';
+
+interface Props {
+  /** Seconds for one full cycle. Lower is faster. */
+  duration?: number;
+}
+
+const { duration = 26 } = Astro.props;
+const COPIES = 3;
+---
+
+<div class="marquee" style={`--marquee-duration: ${duration}s`}>
+  <div class="marquee__inner">
+    {
+      Array.from({ length: COPIES }).map((_, copy) => (
+        <ul class="marquee__group" aria-hidden={copy > 0 ? 'true' : undefined}>
+          {descriptors.map((word) => (
+            <li class="marquee__item">
+              <span class="marquee__spark" aria-hidden="true" />
+              {word}
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    background: var(--accent);
+    color: var(--accent-on);
+    border-block: 3px solid var(--ink);
+    padding-block: var(--s-3);
+    user-select: none;
+  }
+
+  .marquee__inner {
+    display: flex;
+    inline-size: max-content;
+    animation: marquee-scroll var(--marquee-duration) linear infinite;
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    gap: var(--s-6);
+    margin: 0;
+    padding-inline-end: var(--s-6);
+    list-style: none;
+  }
+
+  .marquee__item {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-family: var(--font-pixel), monospace;
+    font-size: var(--pixel-sm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* A pixel diamond between words, drawn rather than typed so it does not
+     depend on a glyph being present in the subset font. */
+  .marquee__spark {
+    inline-size: 9px;
+    block-size: 9px;
+    flex: none;
+    background: currentColor;
+    transform: rotate(45deg);
+    opacity: 0.75;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-33.3333%, 0, 0);
+    }
+  }
+
+  /* Stillness on request: stop the scroll and let the band be swiped instead,
+     so none of the words become unreachable. */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+    }
+
+    .marquee__inner {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>
