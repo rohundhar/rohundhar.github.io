@@ -27,7 +27,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          # Astro 7 needs >=22.23.4, and the newest 22.x is only one patch above
+          # that. 24 is the current LTS and keeps a comfortable margin.
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
